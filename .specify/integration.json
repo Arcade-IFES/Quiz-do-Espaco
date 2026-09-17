@@ -2,14 +2,14 @@
   "version": "1.0.7",
   "integration_state_schema": 1,
   "installed_integrations": [
-    "gemini"
+    "copilot"
   ],
   "integration_settings": {
-    "gemini": {
+    "copilot": {
       "script": "ps",
-      "invoke_separator": "."
+      "invoke_separator": "-"
     }
   },
-  "integration": "gemini",
-  "default_integration": "gemini"
+  "integration": "copilot",
+  "default_integration": "copilot"
 }
