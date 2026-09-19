@@ -143,10 +143,10 @@ and confirm the ranking updates (or doesn't, if it doesn't qualify).
 - [X] T018 [P] [US3] Wire `js/audio.js` (T004) effect calls into the fire/hit events in `js/game.js` (T008)
       and the correct/wrong events in `js/main.js` (T010). *(Done inline while implementing T008/T010 — the
       call sites and the synth functions were written together; no separate change needed here.)*
-- [ ] T019 [US3] Implement mute controls: a keyboard shortcut (`M`) and an on-screen button in
+- [X] T019 [US3] Implement mute controls: a keyboard shortcut (`M`) and an on-screen button in
       `index.html`/`js/main.js` calling `js/audio.js` `setMuted()` (T004); reflect the muted state on the
       button and read the persisted value from `js/ranking.js` `getMuted()` on boot (FR-011).
-- [ ] T020 [US3] Implement the end-of-run ranking flow in `js/main.js`: on game-over, call `js/ranking.js`
+- [X] T020 [US3] Implement the end-of-run ranking flow in `js/main.js`: on game-over, call `js/ranking.js`
       `isTopTen(Run.score)` (T003); if true, show a 3-letter initials prompt and call `addRankingEntry`
       (FR-012); render the current top-10 on the start screen (T007's placeholder) via `getRanking()`.
 

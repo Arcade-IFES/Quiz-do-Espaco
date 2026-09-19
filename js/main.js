@@ -1,7 +1,8 @@
 // js/main.js — orquestra as telas, o estado da partida (Run) e liga Game/Quiz/AudioFX/Ranking.
 // T007: troca de telas e ranking. T009-T013: fluxo completo da Historia 1 (onda -> pergunta ->
-// pontuacao/vidas -> fim de jogo). T015-T017 (este arquivo): dificuldade adaptativa (US2).
-// Som/mudo/ranking de fim de partida (US3) entram nas tarefas seguintes.
+// pontuacao/vidas -> fim de jogo). T015-T017: dificuldade adaptativa (US2). T019-T020 (este
+// arquivo): controle de mudo e ranking de fim de partida (US3). Efeitos sonoros (T018) ja
+// foram ligados durante T008/T010.
 
 (function () {
   var telaInicio = document.getElementById("tela-inicio");
@@ -24,6 +25,12 @@
 
   var fimPontuacao = document.getElementById("fim-pontuacao");
   var fimErradas = document.getElementById("fim-erradas");
+  var fimIniciais = document.getElementById("fim-iniciais");
+  var inputIniciais = document.getElementById("input-iniciais");
+  var btnSalvarIniciais = document.getElementById("btn-salvar-iniciais");
+
+  var btnMudoInicio = document.getElementById("btn-mudo-inicio");
+  var btnMudoJogo = document.getElementById("btn-mudo-jogo");
 
   var VIDAS_INICIAIS = 3;
   var ACERTOS_PARA_SUBIR_TIER = 3;
@@ -73,6 +80,19 @@
   function atualizarHud() {
     hudPontos.textContent = "Pontos: " + run.pontuacao;
     hudVidas.textContent = "Vidas: " + run.vidas;
+  }
+
+  // --- T019: controle de mudo (atalho de teclado + botao na tela) ------------------------
+
+  function atualizarIconeMudo() {
+    var icone = AudioFX.isMuted() ? "🔇" : "🔊";
+    btnMudoInicio.textContent = icone;
+    btnMudoJogo.textContent = icone;
+  }
+
+  function alternarMudo() {
+    AudioFX.setMuted(!AudioFX.isMuted());
+    atualizarIconeMudo();
   }
 
   // --- T013: controle de inicio ---------------------------------------------------------
@@ -194,6 +214,20 @@
         fimErradas.appendChild(linha);
       });
     }
+
+    // --- T020: prompt de iniciais quando a pontuacao entra no top-10 (FR-012) -----------
+    if (Ranking.isTopTen(run.pontuacao)) {
+      inputIniciais.value = "";
+      fimIniciais.hidden = false;
+    } else {
+      fimIniciais.hidden = true;
+    }
+  }
+
+  function salvarIniciais() {
+    Ranking.addRankingEntry(inputIniciais.value, run.pontuacao);
+    fimIniciais.hidden = true;
+    renderizarRanking();
   }
 
   function inicializar() {
@@ -206,6 +240,7 @@
     }
 
     verificarBancoDePerguntas();
+    atualizarIconeMudo();
     renderizarRanking();
     mostrarTela(telaInicio);
 
@@ -213,6 +248,13 @@
     btnJogarNovamente.addEventListener("click", function () {
       renderizarRanking();
       mostrarTela(telaInicio);
+    });
+
+    btnMudoInicio.addEventListener("click", alternarMudo);
+    btnMudoJogo.addEventListener("click", alternarMudo);
+    btnSalvarIniciais.addEventListener("click", salvarIniciais);
+    window.addEventListener("keydown", function (evento) {
+      if (evento.key === "m" || evento.key === "M") alternarMudo();
     });
   }
 
