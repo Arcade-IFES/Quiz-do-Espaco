@@ -62,7 +62,7 @@ call into them without stubs.
       index; expose `drawNextQuestion(tier, lastQuestionId)` that filters the pool by the tier's eligible
       subject tags and excludes `lastQuestionId` unless the pool has only one question (research.md Question
       selection).
-- [ ] T006 Implement the `js/game.js` canvas boot: `requestAnimationFrame` loop, a ship entity that responds
+- [X] T006 Implement the `js/game.js` canvas boot: `requestAnimationFrame` loop, a ship entity that responds
       to keyboard (arrows/`WASD`) and touch (on-screen d-pad, ≥44×44px per constitution Part II) movement, and
       an empty-wave rendering scaffold (no enemies or questions wired yet).
 - [ ] T007 Implement screen wiring in `js/main.js` / `index.html` / `css/style.css`: start screen (ranking
