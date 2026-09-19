@@ -3,8 +3,8 @@
   "integration_state_schema": 1,
   "installed_integrations": [
     "copilot",
-    "gemini",
-    "claude"
+    "claude",
+    "gemini"
   ],
   "integration_settings": {
     "copilot": {
@@ -14,8 +14,12 @@
     "claude": {
       "script": "ps",
       "invoke_separator": "-"
+    },
+    "gemini": {
+      "script": "ps",
+      "invoke_separator": "."
     }
   },
-  "integration": "copilot",
-  "default_integration": "copilot"
+  "integration": "claude",
+  "default_integration": "claude"
 }
