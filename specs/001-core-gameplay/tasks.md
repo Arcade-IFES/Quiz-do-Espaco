@@ -56,7 +56,7 @@ call into them without stubs.
       fire/hit/correct/wrong effects and a looping background pattern via `OscillatorNode`/`GainNode`
       envelopes (no audio files — Principle IV), and expose `setMuted(bool)` that zeroes a master `GainNode`
       and persists through `js/ranking.js`'s `getMuted()`/`setMuted()` (depends on T003).
-- [ ] T005 Implement the `js/quiz.js` question engine: on load, validate `PERGUNTAS` per
+- [X] T005 Implement the `js/quiz.js` question engine: on load, validate `PERGUNTAS` per
       `contracts/perguntas-contract.md` and expose an "unavailable" state when it is missing, not an array, or
       empty (FR-013); expose `shuffleAlternatives(question)` that shuffles `a` while tracking the new correct
       index; expose `drawNextQuestion(tier, lastQuestionId)` that filters the pool by the tier's eligible
