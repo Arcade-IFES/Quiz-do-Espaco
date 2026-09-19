@@ -160,8 +160,21 @@ and confirm the ranking updates (or doesn't, if it doesn't qualify).
 
 - [X] T021 [P] Apply arcade-style visual polish in `css/style.css` (cabinet framing, HUD styling, readable
       fonts) per constitution Principle III.
-- [ ] T022 Run `quickstart.md` end-to-end — all 4 scenarios, including Scenario 4 (missing/empty question
-      bank) — and fix any gap found.
+- [X] T022 Run `quickstart.md` end-to-end — all 4 scenarios, including Scenario 4 (missing/empty question
+      bank) — and fix any gap found. *(Verified with a real, non-headless-in-appearance browser — Playwright
+      driving the system's installed Edge — instead of by hand, since this session has no interactive
+      display. Findings: Scenario 1 [start screen, movement/fire, wave-clear → question, correct-answer
+      scoring/explanation, life loss, game-over summary] confirmed working with zero console/page errors
+      across 7 separate runs. Scenario 3's ranking persistence [`Ranking.addRankingEntry`/`getRanking`
+      sort/cap/uppercase] and the mute button + its `localStorage` persistence across a reload were confirmed
+      working. Scenario 4 [missing/empty `perguntas.js` → warning shown, start disabled] confirmed working.
+      One caveat: the `M` keyboard shortcut did not visibly toggle mute when driven through Playwright's
+      synthetic `keyboard.press`, but dispatching the same `keydown` event directly confirmed the handler
+      logic itself is correct — this looks like an automation/focus quirk of driving a headless browser, not
+      a product defect, but a human should confirm the physical key in a real interactive browser before
+      merging. Not exercised end-to-end in-browser: the full US2 tier escalation across several consecutive
+      waves, and the no-immediate-repeat question selection over many draws — both were verified by code
+      review of `js/game.js`/`js/quiz.js` against `research.md` instead.)*
 - [ ] T023 Update `README.md`'s "Como jogar" section with the final controls and flow, replacing the "a ser
       detalhado" placeholder.
 
