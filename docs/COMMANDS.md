@@ -9,6 +9,7 @@ The specification is the source of truth; code follows it.
 | Agent | Syntax | Where the commands live |
 |---|---|---|
 | Claude Code | `/speckit-specify`, `/speckit-plan`, … | `.claude/skills/speckit-*/SKILL.md` |
+| Gemini CLI | `/speckit.specify`, `/speckit.plan`, … | `.gemini/commands/speckit.*.toml` |
 | GitHub Copilot | `/speckit.specify`, `/speckit.plan`, … (the separator is set in `.specify/integration.json`; check what your editor shows) | `.github/skills/speckit-*/SKILL.md` |
 
 Everything after the command name is free text (the "arguments"), for example
@@ -75,6 +76,7 @@ All of these files live under `specs/NNN-feature-name/`, and the folder name is 
   init-options.json, integration.json, integrations/*.manifest.json   Spec Kit bookkeeping
   workflows/                  bundled "full cycle" workflow (specify → plan → tasks → implement with review gates); not covered here
 .claude/skills/               Claude Code versions of the commands
+.gemini/commands/            Gemini CLI versions of the commands
 .github/skills/               GitHub Copilot versions of the commands
 specs/NNN-feature-name/       one folder per feature (created by the commands)
 ```
