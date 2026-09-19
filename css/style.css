@@ -8,6 +8,23 @@ html, body {
   background: #05060f;
   color: #e8f0ff;
   font-family: "Courier New", monospace;
+  position: relative;
+}
+
+/* Efeito de scanlines de CRT, puramente decorativo (Principio III: identidade arcade). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 10;
 }
 
 .tela {
@@ -19,6 +36,7 @@ html, body {
   gap: 1rem;
   padding: 1rem;
   text-align: center;
+  box-shadow: inset 0 0 0 6px #1a2140, inset 0 0 0 10px #2cd9ff;
 }
 
 .tela[hidden] {
@@ -30,6 +48,17 @@ h1 {
   letter-spacing: 0.1em;
   color: #7cf9ff;
   text-shadow: 0 0 8px #2cd9ff;
+  animation: piscar-titulo 1.6s ease-in-out infinite;
+}
+
+@keyframes piscar-titulo {
+  0%, 100% { text-shadow: 0 0 8px #2cd9ff, 0 0 16px #2cd9ff; }
+  50% { text-shadow: 0 0 4px #2cd9ff; }
+}
+
+.btn-principal:hover, .btn-mudo:hover, .dpad-botao:hover,
+#pergunta-alternativas button:not(:disabled):hover {
+  filter: brightness(1.2);
 }
 
 .btn-principal {

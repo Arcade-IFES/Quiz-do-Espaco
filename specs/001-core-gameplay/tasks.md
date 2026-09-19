@@ -158,7 +158,7 @@ and confirm the ranking updates (or doesn't, if it doesn't qualify).
 
 **Purpose**: Final pass across all stories before opening the Pull Request.
 
-- [ ] T021 [P] Apply arcade-style visual polish in `css/style.css` (cabinet framing, HUD styling, readable
+- [X] T021 [P] Apply arcade-style visual polish in `css/style.css` (cabinet framing, HUD styling, readable
       fonts) per constitution Principle III.
 - [ ] T022 Run `quickstart.md` end-to-end — all 4 scenarios, including Scenario 4 (missing/empty question
       bank) — and fix any gap found.
