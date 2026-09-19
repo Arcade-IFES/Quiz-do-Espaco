@@ -52,7 +52,7 @@ call into them without stubs.
       uppercase letters, `score` integer ≥ 0, list capped at 10 entries sorted by `score` descending), plus
       `getMuted()` / `setMuted(bool)` backed by `localStorage["quizDoEspaco.muted"]`. Every read/write wrapped
       in `try/catch` with an in-memory fallback so nothing throws when storage is unavailable (FR-012).
-- [ ] T004 Implement `js/audio.js`: create one shared `AudioContext` on first user interaction, synthesize
+- [X] T004 Implement `js/audio.js`: create one shared `AudioContext` on first user interaction, synthesize
       fire/hit/correct/wrong effects and a looping background pattern via `OscillatorNode`/`GainNode`
       envelopes (no audio files — Principle IV), and expose `setMuted(bool)` that zeroes a master `GainNode`
       and persists through `js/ranking.js`'s `getMuted()`/`setMuted()` (depends on T003).
