@@ -47,7 +47,7 @@ call into them without stubs.
 
 **⚠️ CRITICAL**: No user story task may start until this phase is complete.
 
-- [ ] T003 Implement `js/ranking.js`: `getRanking()` / `isTopTen(score)` / `addRankingEntry(initials, score)`
+- [X] T003 Implement `js/ranking.js`: `getRanking()` / `isTopTen(score)` / `addRankingEntry(initials, score)`
       backed by `localStorage["quizDoEspaco.ranking"]` (data-model.md RankingEntry: `initials` exactly 3
       uppercase letters, `score` integer ≥ 0, list capped at 10 entries sorted by `score` descending), plus
       `getMuted()` / `setMuted(bool)` backed by `localStorage["quizDoEspaco.muted"]`. Every read/write wrapped
