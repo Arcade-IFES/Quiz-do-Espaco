@@ -65,7 +65,7 @@ call into them without stubs.
 - [X] T006 Implement the `js/game.js` canvas boot: `requestAnimationFrame` loop, a ship entity that responds
       to keyboard (arrows/`WASD`) and touch (on-screen d-pad, ≥44×44px per constitution Part II) movement, and
       an empty-wave rendering scaffold (no enemies or questions wired yet).
-- [ ] T007 Implement screen wiring in `js/main.js` / `index.html` / `css/style.css`: start screen (ranking
+- [X] T007 Implement screen wiring in `js/main.js` / `index.html` / `css/style.css`: start screen (ranking
       list placeholder + start control), run screen (HUD placeholders for score/lives + canvas), game-over
       screen (summary placeholder) — show/hide transitions only, no game logic yet.
 
