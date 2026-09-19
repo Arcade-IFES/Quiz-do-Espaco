@@ -78,8 +78,36 @@ requires a written rationale and reviewer approval.
 
 ## Part II — Game-Specific Rules
 
-This part is intentionally empty in the central repository. Each game repository MUST fill it with the rules
-that apply only to that game, and it MUST at least state the game's difficulty model, controls, supported
-devices, scoring model, subject area, and target audience.
+**Game**: Quiz do Espaço — an educational arcade shooter in the style of `Orbita-do-Saber`: the player
+pilots a ship and answers programming-logic questions to clear waves of enemies.
+
+### Subject Area
+Questions MUST cover introductory computer science and programming logic (variables, conditionals, loops,
+functions, basic data structures, and algorithmic reasoning). Content MUST target students with no more
+than one semester of prior programming instruction; no language-specific trivia (syntax quirks of a single
+language) without a plain-language explanation in `e`.
+
+### Target Audience
+Technical high-school students (IFES) taking an introductory programming course. Sessions MUST be playable
+in a single class period (a few minutes per run).
+
+### Difficulty Model
+The game MUST start at a fixed, easy difficulty and MUST increase enemy speed and question complexity in
+discrete waves as the player's streak of correct answers grows. A wrong answer MUST reset the wave difficulty
+by one step rather than ending the run outright, consistent with Principle VII (no harsh punishment).
+
+### Controls
+Desktop: arrow keys or `WASD` to move, `Space` to fire/confirm an answer, `M` to mute (Principle IV).
+Touch/mobile: on-screen directional pad and a fire/confirm button of at least 44×44px. The game MUST remain
+fully playable with keyboard alone or touch alone — no control scheme MUST be required.
+
+### Supported Devices
+Desktop and laptop browsers (Chrome, Firefox, Edge, current versions) are the primary target. Tablets MUST be
+playable via the touch controls above. Phones are NOT a required target given the classroom/lab setting.
+
+### Scoring Model
+Correct answers award base points plus a streak bonus that grows with consecutive correct answers. Wrong
+answers award no points and reset the streak, but MUST NOT remove score already earned. The top-10 ranking
+(Principle V) is ordered by final score, with total answer time as a tiebreaker.
 
 **Version**: 2.0.0 | **Ratified**: 2026-09-19 | **Last Amended**: 2026-09-19
