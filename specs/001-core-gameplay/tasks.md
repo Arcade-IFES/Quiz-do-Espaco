@@ -83,7 +83,7 @@ score and wave progression; run out of lives and confirm the summary appears.
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Implement the wave/enemy model in `js/game.js`: spawn a wave's enemies, move them toward the
+- [X] T008 [US1] Implement the wave/enemy model in `js/game.js`: spawn a wave's enemies, move them toward the
       ship, detect an enemy reaching the ship (signal 1 life lost) and an enemy being defeated by ship fire
       (FR-002, FR-007).
 - [ ] T009 [US1] Wire wave-cleared → question trigger in `js/main.js`: when a wave's `cleared` flag becomes

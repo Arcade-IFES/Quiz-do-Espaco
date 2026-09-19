@@ -1,6 +1,6 @@
 // js/game.js — loop do canvas, nave, ondas de inimigos, colisoes, tiers de dificuldade.
-// Nesta etapa (T006): apenas o boot do canvas, a nave e o controle de movimento/tiro
-// (teclado + d-pad na tela). Ondas/inimigos entram na tarefa T008, tiers na T014.
+// T006: boot do canvas, nave, movimento/tiro. T008: ondas de inimigos e colisoes
+// (este arquivo). Tiers de dificuldade entram na tarefa T014.
 
 var Game = (function () {
   var canvas, ctx;
@@ -15,6 +15,12 @@ var Game = (function () {
   var VELOCIDADE_TIRO = 360;
   var INTERVALO_TIRO = 0.25;
   var tempoDesdeUltimoTiro = 0;
+
+  var inimigos = [];
+  var ondaAtiva = false;
+  var multiplicadorVelocidade = 1;
+  var BASE_VELOCIDADE_INIMIGO = 60;
+  var INIMIGOS_POR_ONDA = 5;
 
   // Callbacks que main.js define antes de Game.start(); ficam vazios ate la.
   var onWaveCleared = function () {};
@@ -85,6 +91,60 @@ var Game = (function () {
     tiros = tiros.filter(function (tiro) { return tiro.y + tiro.altura > 0; });
   }
 
+  function gerarOnda() {
+    inimigos = [];
+    for (var i = 0; i < INIMIGOS_POR_ONDA; i++) {
+      inimigos.push({
+        x: (largura / (INIMIGOS_POR_ONDA + 1)) * (i + 1) - 14,
+        y: -30 - i * 40,
+        largura: 28,
+        altura: 22,
+        velocidade: BASE_VELOCIDADE_INIMIGO * multiplicadorVelocidade
+      });
+    }
+    ondaAtiva = true;
+  }
+
+  function sobrepoe(a, b) {
+    return a.x < b.x + b.largura && a.x + a.largura > b.x && a.y < b.y + b.altura && a.y + a.altura > b.y;
+  }
+
+  function atualizarInimigos(dt) {
+    if (!ondaAtiva) return;
+
+    inimigos.forEach(function (inimigo) { inimigo.y += inimigo.velocidade * dt; });
+
+    // Inimigo alcancou a nave (ou a base do campo): custa 1 vida e sai de jogo (FR-007).
+    var alcancaram = inimigos.filter(function (inimigo) { return inimigo.y + inimigo.altura >= nave.y; });
+    if (alcancaram.length > 0) {
+      inimigos = inimigos.filter(function (inimigo) { return inimigo.y + inimigo.altura < nave.y; });
+      alcancaram.forEach(function () { onLifeLost(); });
+    }
+
+    // Colisao tiro x inimigo: os dois somem, sem custo de vida (FR-002/FR-007).
+    var tirosRestantes = [];
+    tiros.forEach(function (tiro) {
+      var atingiu = inimigos.find(function (inimigo) { return sobrepoe(tiro, inimigo); });
+      if (atingiu) {
+        inimigos = inimigos.filter(function (inimigo) { return inimigo !== atingiu; });
+        if (typeof AudioFX !== "undefined") AudioFX.playHit();
+      } else {
+        tirosRestantes.push(tiro);
+      }
+    });
+    tiros = tirosRestantes;
+
+    if (ondaAtiva && inimigos.length === 0) {
+      ondaAtiva = false;
+      onWaveCleared();
+    }
+  }
+
+  function desenharInimigos() {
+    ctx.fillStyle = "#ff5da2";
+    inimigos.forEach(function (inimigo) { ctx.fillRect(inimigo.x, inimigo.y, inimigo.largura, inimigo.altura); });
+  }
+
   function desenharNave() {
     ctx.fillStyle = "#7cf9ff";
     ctx.fillRect(nave.x, nave.y, nave.largura, nave.altura);
@@ -101,10 +161,12 @@ var Game = (function () {
 
     atualizarNave(dt);
     atualizarTiros(dt);
+    atualizarInimigos(dt);
 
     ctx.clearRect(0, 0, largura, altura);
     desenharNave();
     desenharTiros();
+    desenharInimigos();
 
     animacaoId = window.requestAnimationFrame(loop);
   }
@@ -121,14 +183,22 @@ var Game = (function () {
 
   function start() {
     tiros = [];
+    multiplicadorVelocidade = 1;
     posicionarNaveInicial();
     ultimoTempo = 0;
+    gerarOnda();
     if (animacaoId === null) {
       animacaoId = window.requestAnimationFrame(loop);
     }
   }
 
+  function nextWave() {
+    tiros = [];
+    gerarOnda();
+  }
+
   function stop() {
+    ondaAtiva = false;
     if (animacaoId !== null) {
       window.cancelAnimationFrame(animacaoId);
       animacaoId = null;
@@ -138,6 +208,7 @@ var Game = (function () {
   return {
     init: init,
     start: start,
+    nextWave: nextWave,
     stop: stop,
     set onWaveCleared(fn) { onWaveCleared = fn; },
     set onLifeLost(fn) { onLifeLost = fn; }
