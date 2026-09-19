@@ -2,10 +2,16 @@
   "version": "1.0.7",
   "integration_state_schema": 1,
   "installed_integrations": [
-    "copilot"
+    "copilot",
+    "gemini",
+    "claude"
   ],
   "integration_settings": {
     "copilot": {
+      "script": "ps",
+      "invoke_separator": "."
+    },
+    "claude": {
       "script": "ps",
       "invoke_separator": "-"
     }
