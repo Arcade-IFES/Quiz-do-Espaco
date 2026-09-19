@@ -1,6 +1,6 @@
 // js/game.js — loop do canvas, nave, ondas de inimigos, colisoes, tiers de dificuldade.
-// T006: boot do canvas, nave, movimento/tiro. T008: ondas de inimigos e colisoes
-// (este arquivo). Tiers de dificuldade entram na tarefa T014.
+// T006: boot do canvas, nave, movimento/tiro. T008: ondas de inimigos e colisoes.
+// T014: tabela de tiers de dificuldade (este arquivo).
 
 var Game = (function () {
   var canvas, ctx;
@@ -21,6 +21,16 @@ var Game = (function () {
   var multiplicadorVelocidade = 1;
   var BASE_VELOCIDADE_INIMIGO = 60;
   var INIMIGOS_POR_ONDA = 5;
+
+  // Tiers de dificuldade (specs/001-core-gameplay/research.md, "Difficulty tiering"):
+  // cada tier define o multiplicador de velocidade dos inimigos e os assuntos elegiveis
+  // para a proxima pergunta. js/main.js sobe/desce o tier conforme a sequencia do jogador.
+  var TIERS = [
+    { velocidadeMultiplicador: 1.0, tags: ["variaveis", "condicionais"] },
+    { velocidadeMultiplicador: 1.3, tags: ["condicionais", "lacos"] },
+    { velocidadeMultiplicador: 1.6, tags: ["lacos", "funcoes"] },
+    { velocidadeMultiplicador: 2.0, tags: ["funcoes", "estruturas-de-dados"] }
+  ];
 
   // Callbacks que main.js define antes de Game.start(); ficam vazios ate la.
   var onWaveCleared = function () {};
@@ -183,7 +193,7 @@ var Game = (function () {
 
   function start() {
     tiros = [];
-    multiplicadorVelocidade = 1;
+    multiplicadorVelocidade = TIERS[0].velocidadeMultiplicador;
     posicionarNaveInicial();
     ultimoTempo = 0;
     gerarOnda();
@@ -192,7 +202,9 @@ var Game = (function () {
     }
   }
 
-  function nextWave() {
+  function nextWave(tierIndex) {
+    var tier = TIERS[limitar(tierIndex || 0, 0, TIERS.length - 1)];
+    multiplicadorVelocidade = tier.velocidadeMultiplicador;
     tiros = [];
     gerarOnda();
   }
@@ -210,6 +222,7 @@ var Game = (function () {
     start: start,
     nextWave: nextWave,
     stop: stop,
+    TIERS: TIERS,
     set onWaveCleared(fn) { onWaveCleared = fn; },
     set onLifeLost(fn) { onLifeLost = fn; }
   };
