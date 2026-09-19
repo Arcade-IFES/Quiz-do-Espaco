@@ -5,8 +5,9 @@ reads: `/speckit-plan` checks the design against it, `/speckit-analyze` treats a
 and `/speckit-implement` follows it while coding. That makes it the right place for rules that must hold
 in **every** game — and the wrong place for anything about a single game.
 
-Status today: the file in this repo is still the **unfilled template** (`[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`, …).
-Until it is filled, the "central rules" idea has no effect. The decisions below are the content to put in it.
+Status: **filled — version 2.0.0 (2026-09-19)**. It replaced a first version (1.0.0, commit `e6be92c`) that required English for
+all code, READMEs and commits, mandatory touch controls, three lives and a single difficulty; those points were changed to match
+the group's decisions below. The old text remains in git history.
 
 ## Decisions already taken by the group
 
@@ -71,14 +72,14 @@ are my reading of what the group said and are worth a quick confirmation.
   add those as mandatory sections in `.specify/templates/spec-template.md`. Nothing else needs to be shipped in the
   template: the constitution only says what every game must have, and each game implements it its own way.
 
-## Ready-to-run prompt
+## The prompt that produced version 2.0.0 (kept for reference)
 
-Run this **once, in the central repo**. It contains no blanks.
+This is the input used to fill the constitution. To change a rule later, use the amendment steps at the bottom instead of re-running it.
 
 ```
 /speckit-constitution Create the constitution for the "Arcade-IFES Games" project, written in English, with this structure:
 "Part I — Arcade-IFES Common Rules" (shared by every game, never edited inside a game repo), a Governance section, and an
-empty "Part II — Game-Specific Rules" that each game repository will fill. Set version 1.0.0 and today's date as ratified.
+empty "Part II — Game-Specific Rules" that each game repository will fill. Set version 2.0.0 and today's date as ratified.
 
 Part I principles:
 I. Language — Spec Kit artifacts (constitution, specs, plans, tasks, checklists, central docs) are in English. Everything the

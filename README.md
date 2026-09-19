@@ -3,7 +3,7 @@
 This repository is the **starting point of every arcade game** built by our group.
 It contains no game. It contains the *rules and the tooling* that every game must start from:
 the [GitHub Spec Kit](https://github.com/github/spec-kit) setup, the shared **constitution**,
-the templates, and the AI-agent commands (Claude Code and Gemini).
+the templates, and the AI-agent commands (Claude Code and GitHub Copilot).
 
 > Read this file first. Then read [`docs/COMMANDS.md`](docs/COMMANDS.md) (what each Spec Kit command does)
 > and [`docs/CONSTITUTION-GUIDE.md`](docs/CONSTITUTION-GUIDE.md) (which shared rules we define here).
@@ -17,7 +17,7 @@ the templates, and the AI-agent commands (Claude Code and Gemini).
    ├── .specify/memory/constitution.md   ← shared rules for ALL games
    ├── .specify/templates/               ← spec / plan / tasks templates
    ├── .specify/scripts/                 ← helper scripts used by the commands
-   └── .claude/skills/  .gemini/commands/ ← the /speckit-* commands
+   └── .claude/skills/  .github/skills/  ← the /speckit-* commands
                 │
                 │  "Use this template"  (a copy — fresh git history)
                 ▼
@@ -42,7 +42,7 @@ when the central rules change, each game repo has to pull the change on purpose 
 |---|---|---|
 | `.specify/memory/constitution.md` | **Part I – Arcade-IFES common rules** (owned here) | Part I copied, plus **Part II – game-specific rules** |
 | `.specify/templates/`, `.specify/scripts/` | Owned here | Copied, normally left untouched |
-| `.claude/skills/`, `.gemini/commands/` | Owned here | Copied, normally left untouched |
+| `.claude/skills/`, `.github/skills/` | Owned here | Copied, normally left untouched |
 | `README.md` | This guide | The game's own README (how to play, controls, rules) |
 | `specs/` | **Empty** — no feature belongs here | One folder per feature: `specs/001-…`, `specs/002-…` |
 | Game source code | Never | Yes |
@@ -71,7 +71,7 @@ Detailed list and a ready-to-run prompt are in [`docs/CONSTITUTION-GUIDE.md`](do
    quality gates, and how the constitution itself is amended.
 2. **Templates** — only when we want every spec/plan to have the same shape (for example, extra mandatory
    sections such as "Learning objective" or "Controls"). Edit files in `.specify/templates/`.
-3. **One AI agent set-up that works for everyone** — Claude Code and Gemini are both installed.
+3. **One AI agent set-up that works for everyone** — Claude Code (`.claude/skills/`) and GitHub Copilot (`.github/skills/`) are both installed.
 4. **This documentation.**
 
 ## 4. What we define in each game repository
@@ -89,7 +89,7 @@ Detailed list and a ready-to-run prompt are in [`docs/CONSTITUTION-GUIDE.md`](do
 ### Requirements (once per machine)
 
 - Git, and a GitHub account in the **Arcade-IFES** organization.
-- [Claude Code](https://claude.com/claude-code) (or Gemini CLI).
+- [Claude Code](https://claude.com/claude-code) (or GitHub Copilot).
 - [GitHub CLI](https://cli.github.com/) `gh` (optional, only for the one-line method).
 - **PowerShell.** The Spec Kit helper scripts in this repo are PowerShell (`.specify/scripts/powershell/`).
   Windows already has it. On macOS/Linux install PowerShell 7 (`pwsh`) — or see "Maintainer notes" for the alternative.
@@ -173,10 +173,10 @@ git remote add central https://github.com/Arcade-IFES/Spec-Kit-jogos.git    # fi
 git fetch central
 
 # 1) Look at what changed before touching anything
-git diff HEAD central/main -- .specify/memory/constitution.md .specify/templates .claude .gemini
+git diff HEAD central/main -- .specify/memory/constitution.md .specify/templates .claude .github/skills
 
 # 2) Tooling and templates (only if the game did not customize them)
-git checkout central/main -- .specify/templates .specify/scripts .claude .gemini
+git checkout central/main -- .specify/templates .specify/scripts .claude .github/skills
 
 # 3) Constitution: copy ONLY Part I from central/main into your constitution.md by hand.
 #    Do not overwrite the file: Part II belongs to the game.
@@ -197,13 +197,13 @@ because games will need to sync it.
 
 **Before the first game repo is created — checklist:**
 
-- [ ] Fill in the constitution (it is still the empty template) with the ready-to-run prompt in
-      [`docs/CONSTITUTION-GUIDE.md`](docs/CONSTITUTION-GUIDE.md).
-- [ ] Commit the `.claude/` folder and `.specify/integrations/claude.manifest.json` (currently not committed).
-- [ ] Decide the default agent. `.specify/integration.json` still says `gemini`; the group uses Claude.
-      Check `specify integration list` and, if needed, `specify integration switch claude`.
-- [ ] Add a `.gitattributes` file (for example `* text=auto eol=lf`) to stop Windows/Linux line-ending noise
-      in `.specify/` files (they currently show as fully modified without real changes).
+- [x] Constitution filled — version **2.0.0** (see `docs/CONSTITUTION-GUIDE.md`). It replaced a first version (1.0.0,
+      commit `e6be92c`); the old text stays in git history. Still to do: review it, commit it, and get the group's approval.
+- [x] `.claude/` committed.
+- [x] `.gitattributes` added (LF line endings), so Windows/Linux line-ending noise in `.specify/` is gone.
+- [ ] Decide the default agent. `.specify/integration.json` says `copilot`, while the group uses Claude. Run
+      `specify integration list`; if `gemini` still appears although its folder is gone, clean it with
+      `specify integration uninstall gemini`, and if needed `specify integration switch claude`.
 - [ ] Decide the script flavour. Scripts are PowerShell only (`--script ps`). If some classmates are on
       macOS/Linux and do not want PowerShell, regenerate with `--script sh`. Keep **one** flavour for the whole group.
 - [ ] Tick **Settings → General → Template repository** on GitHub.
