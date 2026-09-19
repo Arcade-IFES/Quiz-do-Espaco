@@ -10,8 +10,10 @@ sem internet.
 
 ## Status
 
-🚧 Em desenvolvimento. A primeira feature (`specs/001-core-gameplay`) ainda será especificada e implementada
-via Spec Kit (`/speckit-specify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`).
+✅ Jogável. A primeira feature (`specs/001-core-gameplay`) está implementada: nave, ondas de inimigos,
+perguntas entre ondas, dificuldade adaptativa, som/mudo e ranking local. Próximas features (mais perguntas,
+efeitos visuais, novos modos) continuam pelo fluxo do Spec Kit (`/speckit-specify` → `/speckit-plan` →
+`/speckit-tasks` → `/speckit-implement`).
 
 ## Sobre o jogo
 
@@ -24,7 +26,22 @@ via Spec Kit (`/speckit-specify` → `/speckit-plan` → `/speckit-tasks` → `/
 
 ## Como jogar
 
-_A ser detalhado conforme a primeira feature for implementada._
+1. Abra `index.html` no navegador (duplo clique — não precisa de servidor nem de internet).
+2. Na tela inicial, veja o ranking local e clique em **Iniciar**.
+3. Pilote a nave e atire nos inimigos que descem em cada onda.
+4. Ao limpar uma onda, responda a pergunta de lógica de programação que aparece na tela:
+   - **Acertou:** ganha pontos (com bônus por sequência de acertos), a explicação é mostrada e a próxima onda
+     fica mais rápida e com perguntas mais difíceis a cada 3 acertos seguidos.
+   - **Errou:** não perde vida nem pontos ganhos, a explicação correta é mostrada, e a dificuldade recua um
+     passo.
+5. Cada inimigo que alcança a nave custa 1 vida. Ao zerar as vidas, a partida termina e aparece um resumo com
+   todas as perguntas que você errou (com a explicação de cada uma).
+6. Se a pontuação entrar no top-10, digite suas iniciais (3 letras) para salvar no ranking local.
+
+## Aviso de banco de perguntas ausente
+
+Se o arquivo `perguntas.js` estiver ausente, vazio ou corrompido, a tela inicial mostra um aviso e o botão
+**Iniciar** fica desabilitado — o jogo nunca trava silenciosamente por falta de perguntas.
 
 ## Controles
 
@@ -37,9 +54,17 @@ _A ser detalhado conforme a primeira feature for implementada._
 ## Estrutura do projeto
 
 ```
+index.html            ponto de entrada — abra este arquivo para jogar
+css/style.css          visual (tema arcade, HUD, telas)
+js/
+  ranking.js            ranking local e preferência de mudo (localStorage)
+  audio.js              efeitos sonoros e música via Web Audio API
+  quiz.js               motor de perguntas (validação, embaralhamento, seleção por dificuldade)
+  game.js               nave, ondas de inimigos, colisões e tiers de dificuldade
+  main.js               telas, estado da partida e integração entre os módulos acima
+perguntas.js          banco de perguntas (editável por um educador, sem tocar no código)
 .specify/            ferramentas do Spec Kit (herdadas do repositório central)
 specs/                especificações de cada feature (specs/001-…, specs/002-…)
-perguntas.js          banco de perguntas (editável por um educador, sem tocar no código)
 ```
 
 ## Créditos

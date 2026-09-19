@@ -175,7 +175,7 @@ and confirm the ranking updates (or doesn't, if it doesn't qualify).
       merging. Not exercised end-to-end in-browser: the full US2 tier escalation across several consecutive
       waves, and the no-immediate-repeat question selection over many draws — both were verified by code
       review of `js/game.js`/`js/quiz.js` against `research.md` instead.)*
-- [ ] T023 Update `README.md`'s "Como jogar" section with the final controls and flow, replacing the "a ser
+- [X] T023 Update `README.md`'s "Como jogar" section with the final controls and flow, replacing the "a ser
       detalhado" placeholder.
 
 ---
