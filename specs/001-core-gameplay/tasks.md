@@ -140,8 +140,9 @@ and confirm the ranking updates (or doesn't, if it doesn't qualify).
 
 ### Implementation for User Story 3
 
-- [ ] T018 [P] [US3] Wire `js/audio.js` (T004) effect calls into the fire/hit events in `js/game.js` (T008)
-      and the correct/wrong events in `js/main.js` (T010).
+- [X] T018 [P] [US3] Wire `js/audio.js` (T004) effect calls into the fire/hit events in `js/game.js` (T008)
+      and the correct/wrong events in `js/main.js` (T010). *(Done inline while implementing T008/T010 — the
+      call sites and the synth functions were written together; no separate change needed here.)*
 - [ ] T019 [US3] Implement mute controls: a keyboard shortcut (`M`) and an on-screen button in
       `index.html`/`js/main.js` calling `js/audio.js` `setMuted()` (T004); reflect the muted state on the
       button and read the persisted value from `js/ranking.js` `getMuted()` on boot (FR-011).
