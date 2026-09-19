@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quiz do Espaço</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <section id="tela-inicio" class="tela">
+    <h1>Quiz do Espaço</h1>
+    <p id="aviso-perguntas" class="aviso" hidden></p>
+    <button id="btn-iniciar" class="btn-principal">Iniciar</button>
+    <button id="btn-mudo-inicio" class="btn-mudo" aria-label="Alternar som">🔊</button>
+    <div class="ranking">
+      <h2>Top 10</h2>
+      <ol id="lista-ranking"></ol>
+    </div>
+  </section>
+
+  <section id="tela-jogo" class="tela" hidden>
+    <div class="hud">
+      <span id="hud-pontos">Pontos: 0</span>
+      <span id="hud-vidas">Vidas: 3</span>
+      <button id="btn-mudo-jogo" class="btn-mudo" aria-label="Alternar som">🔊</button>
+    </div>
+    <canvas id="canvas-jogo" width="480" height="640"></canvas>
+    <div id="dpad" class="dpad" hidden>
+      <button id="dpad-cima" class="dpad-botao" aria-label="Cima">▲</button>
+      <button id="dpad-baixo" class="dpad-botao" aria-label="Baixo">▼</button>
+      <button id="dpad-esquerda" class="dpad-botao" aria-label="Esquerda">◀</button>
+      <button id="dpad-direita" class="dpad-botao" aria-label="Direita">▶</button>
+      <button id="dpad-atirar" class="dpad-botao dpad-atirar" aria-label="Atirar">●</button>
+    </div>
+    <div id="pergunta" class="pergunta" hidden>
+      <p id="pergunta-texto"></p>
+      <div id="pergunta-alternativas"></div>
+      <p id="pergunta-explicacao" hidden></p>
+    </div>
+  </section>
+
+  <section id="tela-fim" class="tela" hidden>
+    <h2>Fim de jogo</h2>
+    <p id="fim-pontuacao"></p>
+    <div id="fim-iniciais" hidden>
+      <label for="input-iniciais">Novo recorde! Digite suas iniciais:</label>
+      <input id="input-iniciais" maxlength="3" autocomplete="off" />
+      <button id="btn-salvar-iniciais">Salvar</button>
+    </div>
+    <h3>Perguntas que você errou</h3>
+    <ul id="fim-erradas"></ul>
+    <button id="btn-jogar-novamente" class="btn-principal">Jogar novamente</button>
+  </section>
+
+  <script src="perguntas.js"></script>
+  <script src="js/ranking.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

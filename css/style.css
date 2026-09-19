@@ -1,0 +1,155 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #05060f;
+  color: #e8f0ff;
+  font-family: "Courier New", monospace;
+}
+
+.tela {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.tela[hidden] {
+  display: none;
+}
+
+h1 {
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: #7cf9ff;
+  text-shadow: 0 0 8px #2cd9ff;
+}
+
+.btn-principal {
+  font-family: inherit;
+  font-size: 1.2rem;
+  padding: 0.6em 1.4em;
+  background: #ff5da2;
+  color: #05060f;
+  border: 3px solid #ffd166;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-mudo {
+  font-size: 1.2rem;
+  background: transparent;
+  border: 2px solid #7cf9ff;
+  color: #7cf9ff;
+  border-radius: 50%;
+  width: 2.4em;
+  height: 2.4em;
+  cursor: pointer;
+}
+
+.ranking {
+  border: 2px solid #2cd9ff;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem;
+  min-width: 14rem;
+}
+
+.ranking ol {
+  text-align: left;
+  padding-left: 1.2rem;
+}
+
+.hud {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  justify-content: space-between;
+}
+
+#canvas-jogo {
+  background: #0a0f2b;
+  border: 3px solid #2cd9ff;
+  max-width: 100%;
+  touch-action: none;
+}
+
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 3rem);
+  grid-template-rows: repeat(2, 3rem);
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.dpad-botao {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 1.2rem;
+  background: #1a2140;
+  color: #e8f0ff;
+  border: 2px solid #7cf9ff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dpad-atirar {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  background: #ff5da2;
+}
+
+.pergunta {
+  background: #0a0f2b;
+  border: 2px solid #ffd166;
+  border-radius: 8px;
+  padding: 1rem;
+  max-width: 480px;
+  width: 100%;
+}
+
+.pergunta[hidden] {
+  display: none;
+}
+
+#pergunta-alternativas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+#pergunta-alternativas button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5em;
+  background: #1a2140;
+  color: #e8f0ff;
+  border: 2px solid #2cd9ff;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+}
+
+#pergunta-alternativas button.correta {
+  border-color: #6bffb0;
+  color: #6bffb0;
+}
+
+#pergunta-alternativas button.errada {
+  border-color: #ff5d5d;
+  color: #ff5d5d;
+}
+
+#fim-erradas {
+  text-align: left;
+  max-width: 32rem;
+}

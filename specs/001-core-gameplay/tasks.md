@@ -28,7 +28,7 @@ of each story.
 
 **Purpose**: Create the project skeleton every story builds on.
 
-- [ ] T001 Create the project skeleton per plan.md → Project Structure: `index.html` (canvas + start/run/game-over
+- [X] T001 Create the project skeleton per plan.md → Project Structure: `index.html` (canvas + start/run/game-over
       screen containers), `css/style.css` (base reset), and empty `js/main.js`, `js/game.js`, `js/quiz.js`,
       `js/audio.js`, `js/ranking.js` module files loaded via plain `<script>` tags (no bundler — Principle II).
 - [ ] T002 [P] Author the starter `perguntas.js` fixture at the repository root: ~15 original pt-BR questions
