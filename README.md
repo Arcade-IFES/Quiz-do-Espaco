@@ -13,26 +13,32 @@ the templates, and the AI-agent commands (Claude Code, Gemini CLI and GitHub Cop
 ## 1. The idea in one picture
 
 ```
-   Spec-Kit-jogos  (this repo, GitHub "template repository")
+   Spec-Kit-jogos  (this repo — the "upstream" of every game)
    ├── .specify/memory/constitution.md   ← shared rules for ALL games
    ├── .specify/templates/               ← spec / plan / tasks templates
    ├── .specify/scripts/                 ← helper scripts used by the commands
    └── .claude/skills/  .gemini/commands/  .github/skills/  ← the /speckit-* commands
                 │
-                │  "Use this template"  (a copy — fresh git history)
+                │  git clone  →  rename the remote "origin" to "upstream"
                 ▼
-   Game repository  (one per game, e.g. Orbita-do-Saber)
-   ├── everything above, copied
-   ├── constitution.md  →  shared rules  +  the game's own rules
+   Game repository  (one per game, e.g. Orbita-do-Saber)   ← its own "origin" on GitHub
+   ├── everything above, with the same git history as the central repo
+   ├── constitution.md  →  shared rules (Part I)  +  the game's own rules (Part II)
    ├── specs/001-…/     →  spec.md, plan.md, tasks.md … for each feature
    └── the game's source code
+                ▲
+                │  git fetch upstream  →  git merge upstream/main   (when the central rules change)
+                │
+   Spec-Kit-jogos
 ```
 
 **Important — how Spec Kit really works.** Spec Kit is *per repository*: each repo has its own
 `.specify/` folder and its own constitution. We found no built-in "inheritance" from a parent repo
 (the official docs describe presets and extensions, but nothing that links a constitution across repos).
-So our "central repo" works as a **template that is copied**. A copy does not update itself:
-when the central rules change, each game repo has to pull the change on purpose (see section 6).
+So each game is a **clone of the central repo whose original remote was renamed to `upstream`**.
+The game keeps the central history, so when the central rules change, the game pulls them with a normal
+`git merge` (see section 6). It is **not** a GitHub fork and **not** a template copy: do not use the
+"Fork" or "Use this template" buttons.
 
 ---
 
@@ -91,28 +97,43 @@ Detailed list and a ready-to-run prompt are in [`docs/CONSTITUTION-GUIDE.md`](do
 
 - Git, and a GitHub account in the **Arcade-IFES** organization.
 - [Claude Code](https://claude.com/claude-code) (or Gemini CLI / GitHub Copilot).
-- [GitHub CLI](https://cli.github.com/) `gh` (optional, only for the one-line method).
+- [GitHub CLI](https://cli.github.com/) `gh`, logged in (`gh auth login`). Optional: without it, create the empty
+  repository on the GitHub website (see Step 1, "Without `gh`").
 - **PowerShell.** The Spec Kit helper scripts in this repo are PowerShell (`.specify/scripts/powershell/`).
   Windows already has it. On macOS/Linux install PowerShell 7 (`pwsh`) — or see "Maintainer notes" for the alternative.
 
-### Step 1 — Create the repository from the template
-
-*Web:* open this repository on GitHub → **Use this template** → **Create a new repository**
-→ owner **Arcade-IFES**, choose the game's name → **Create repository**.
-
-*Command line:*
+### Step 1 — Clone the central repo and point it to a new game repository
 
 ```bash
-gh repo create Arcade-IFES/<game-name> --template Arcade-IFES/Spec-Kit-jogos --private --clone
+git clone https://github.com/Arcade-IFES/Spec-Kit-jogos.git <game-name>
 cd <game-name>
+
+git remote rename origin upstream                 # the central repo becomes "upstream"
+git remote set-url --push upstream DISABLED       # nobody can push a game into the central repo by accident
+git config remote.upstream.tagOpt --no-tags       # never import central tags into the game (games have their own vX.Y.Z tags)
+
+gh repo create Arcade-IFES/<game-name> --private --source=. --remote=origin --push
 ```
 
-(Use `--public` instead of `--private` if the course asks for it.)
+The last command creates the new repository on GitHub, adds it as `origin` and pushes `main`.
+Use `--public` instead of `--private` if the course asks for it.
 
-> The "Use this template" button only exists after a maintainer ticks
-> **Settings → General → Template repository** in this repo (see Maintainer notes).
+*Without `gh`:* on GitHub create a new **empty** repository in the Arcade-IFES organization (no README,
+no .gitignore, no license), then:
 
-The new repository contains all files of the central repo's default branch, with a fresh git history.
+```bash
+git remote add origin https://github.com/Arcade-IFES/<game-name>.git
+git push -u origin main
+```
+
+Check the result with `git remote -v`. It must look like this:
+
+```
+origin    https://github.com/Arcade-IFES/<game-name>.git (fetch)
+origin    https://github.com/Arcade-IFES/<game-name>.git (push)
+upstream  https://github.com/Arcade-IFES/Spec-Kit-jogos.git (fetch)
+upstream  DISABLED (push)
+```
 
 ### Step 2 — Open the agent in the new repository
 
@@ -147,8 +168,8 @@ git switch -c 001-core-gameplay
 /speckit-converge  (repeat implement/converge until it reports converged)
 ```
 
-Commit `specs/001-core-gameplay/` together with the code, open a Pull Request, and get it reviewed
-against the constitution.
+Commit `specs/001-core-gameplay/` together with the code, open a Pull Request **on the game's repository**,
+and get it reviewed against the constitution.
 
 > This repo has no git extension installed, so `/speckit-specify` does **not** create the git branch
 > by itself. Create it manually as shown above.
@@ -160,32 +181,50 @@ in `specs/` sequentially by itself.
 
 ### Step 6 — Replace the README
 
-Rewrite `README.md` for the game (how to play, controls, structure, credits). Keep a link back to the
-central repository.
+Rewrite `README.md` for the game, **in Portuguese** (how to play, controls, structure, credits — see the constitution).
+Keep a link back to the central repository. Later merges from `upstream` will conflict on this file whenever the
+central README changes; the game's version always wins (see section 6).
+
+### Rules for game repositories
+
+- Do **not** edit the tooling in a game repo (`.specify/templates/`, `.specify/scripts/`, `.claude/`, `.gemini/`,
+  `.github/skills/`) and do not touch Part I of the constitution. That keeps every merge from `upstream` clean.
+- Do **not** improve the central repo from inside a game repo. Make the change in a separate clone of
+  `Spec-Kit-jogos`, through a Pull Request (see section 7), and then merge it into the games.
 
 ---
 
 ## 6. Keeping a game in sync with the central repo
 
-Because a game repo is a copy, central changes do not arrive automatically. To pull them:
+Run this inside the game repo, on a clean `main` (everything committed), whenever the group announces a central change.
 
 ```bash
-git remote add central https://github.com/Arcade-IFES/Spec-Kit-jogos.git    # first time only
-git fetch central
+git fetch upstream
 
-# 1) Look at what changed before touching anything
-git diff HEAD central/main -- .specify/memory/constitution.md .specify/templates .claude .gemini .github/skills
+git log --oneline HEAD..upstream/main       # what is new in the central repo
+git diff HEAD...upstream/main --stat        # which files it changes
 
-# 2) Tooling and templates (only if the game did not customize them)
-git checkout central/main -- .specify/templates .specify/scripts .claude .gemini .github/skills
-
-# 3) Constitution: copy ONLY Part I from central/main into your constitution.md by hand.
-#    Do not overwrite the file: Part II belongs to the game.
-git show central/main:.specify/memory/constitution.md
+git switch -c sync-central                  # do the merge on a branch, so `main` stays safe
+git merge upstream/main
 ```
 
-Then run `/speckit-analyze` on the features in progress, because a changed rule can invalidate an existing spec or plan.
-When a constitution change is copied, bump the version line at the bottom of the constitution.
+If git reports no conflicts, the merge is done. If it stops with conflicts, resolve them as follows
+(`git status` lists the files; "ours" = the game, "theirs" = the central repo):
+
+| File | What to do |
+|---|---|
+| `README.md` | Keep the game's version: `git checkout --ours README.md && git add README.md` |
+| `.specify/memory/constitution.md` | Usually merges by itself, because Part I (central) and Part II (game) are different blocks. If the **Version** line conflicts, keep both parts, use the higher of the two version numbers with the MINOR number raised by one, and set *Last Amended* to today. |
+| Anything under `.specify/`, `.claude/`, `.gemini/`, `.github/skills/` | Someone edited tooling inside the game. Take the central version: `git checkout --theirs <file> && git add <file>` |
+
+Then finish:
+
+```bash
+git commit                                  # completes the merge (only needed after conflicts)
+```
+
+Run `/speckit-analyze` on the features in progress, because a changed rule can invalidate an existing spec or plan,
+fix what it reports, and open a Pull Request from `sync-central` into `main`. To give up halfway: `git merge --abort`.
 
 ---
 
@@ -206,11 +245,17 @@ because games will need to sync it.
       `specify integration status` reports one error, `unsafe-multi-install`, only because Copilot is not declared
       safe to combine with other agents (Claude and Gemini are). If it ever causes trouble, remove Copilot with
       `specify integration uninstall copilot`.
+- [ ] Commit and push everything pending (Gemini reinstall, docs) and get the group's approval of constitution 2.0.0.
 - [ ] Decide the script flavour. Scripts are PowerShell only (`--script ps`). If some classmates are on
       macOS/Linux and do not want PowerShell, regenerate with `--script sh`. Keep **one** flavour for the whole group.
-- [ ] Tick **Settings → General → Template repository** on GitHub.
+- [ ] Protect `main` on GitHub (Pull Request + one review required): games merge from `upstream/main`,
+      so everything on it must have been reviewed.
 - [ ] Keep `specs/` empty in this repo.
-- [ ] Do a dry run: create a throw-away repo from the template, run the flow once, delete it.
+- [ ] Do a dry run: follow section 5 to create a throw-away game repo, run the flow once, merge a small central
+      change following section 6, then delete the game repo.
+
+**No tags in the central repo.** Games use `vX.Y.Z` tags for their own releases (constitution, Principle IX),
+so central tags would collide with them. Games also set `remote.upstream.tagOpt --no-tags` (section 5, Step 1).
 
 **Upgrading Spec Kit itself** (installed version: 1.0.7): `specify self check`, then `specify self upgrade --dry-run`
 and `specify self upgrade`. Do it in the central repo first, review the diff, merge, then let the games sync (section 6).
@@ -225,5 +270,5 @@ local extension overrides are git-ignored by Spec Kit on purpose. Do not commit 
 
 - `Orbita-do-Saber` — educational arcade shooter (HTML/CSS/JS, question bank in `perguntas.js`, local ranking, sound,
   versioned releases). It was written **before** this Spec Kit setup and has no `.specify/` or `specs/`; it is the model
-  for the rules in the constitution, not a Spec Kit repo. The **next game is the first one built from this template**.
+  for the rules in the constitution, not a Spec Kit repo. The **next game is the first one created from this repository** (section 5).
 - `Corrida-Contra-o-Sino`, `-Logic-Dungeon-` — other games of the organization.
