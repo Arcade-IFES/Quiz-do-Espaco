@@ -1,7 +1,7 @@
 // js/main.js — orquestra as telas, o estado da partida (Run) e liga Game/Quiz/AudioFX/Ranking.
-// T007: troca de telas e ranking. T009-T013 (este arquivo): fluxo completo da Historia 1
-// (onda -> pergunta -> pontuacao/vidas -> fim de jogo). Dificuldade adaptativa (US2) e
-// som/mudo/ranking de fim de partida (US3) entram nas tarefas seguintes.
+// T007: troca de telas e ranking. T009-T013: fluxo completo da Historia 1 (onda -> pergunta ->
+// pontuacao/vidas -> fim de jogo). T015-T017 (este arquivo): dificuldade adaptativa (US2).
+// Som/mudo/ranking de fim de partida (US3) entram nas tarefas seguintes.
 
 (function () {
   var telaInicio = document.getElementById("tela-inicio");
@@ -26,6 +26,7 @@
   var fimErradas = document.getElementById("fim-erradas");
 
   var VIDAS_INICIAIS = 3;
+  var ACERTOS_PARA_SUBIR_TIER = 3;
 
   // Estado de uma partida (Run) — nao persiste entre recarregamentos da pagina
   // (specs/001-core-gameplay/data-model.md, Run).
@@ -101,7 +102,8 @@
 
   function aoConcluirOnda() {
     if (!partidaEmAndamento) return;
-    var pergunta = Quiz.drawNextQuestion(null, run.idUltimaPergunta);
+    var tierAtual = Game.TIERS[run.tier];
+    var pergunta = Quiz.drawNextQuestion(tierAtual.tags, run.idUltimaPergunta);
     if (!pergunta) return; // banco ficou indisponivel em tempo de execucao; nao trava o jogo
     run.idUltimaPergunta = pergunta.id;
     mostrarPergunta(pergunta);
@@ -134,11 +136,15 @@
     if (!acertou) {
       perguntaAlternativas.children[pergunta.indiceCorreto].classList.add("correta");
       run.sequencia = 0;
+      run.tier = Math.max(0, run.tier - 1); // erro reduz a dificuldade em um passo, sem terminar a partida (US2)
       run.erradas.push({ texto: pergunta.texto, explicacao: pergunta.explicacao });
       if (typeof AudioFX !== "undefined") AudioFX.playWrong();
     } else {
       run.pontuacao += 100 + run.sequencia * 20; // pontos base + bonus de sequencia
       run.sequencia += 1;
+      if (run.sequencia % ACERTOS_PARA_SUBIR_TIER === 0) {
+        run.tier = Math.min(Game.TIERS.length - 1, run.tier + 1); // 3 acertos seguidos sobem o tier (US2)
+      }
       if (typeof AudioFX !== "undefined") AudioFX.playCorrect();
     }
 
@@ -148,7 +154,7 @@
 
     setTimeout(function () {
       painelPergunta.hidden = true;
-      if (partidaEmAndamento) Game.nextWave();
+      if (partidaEmAndamento) Game.nextWave(run.tier);
     }, 2200);
   }
 

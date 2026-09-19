@@ -119,11 +119,11 @@ answer incorrectly and observe the difficulty step down instead of the run endin
 
 - [X] T014 [US2] Add a difficulty-tier table to `js/game.js`: a small fixed array (research.md Difficulty
       tiering) where each tier defines an enemy speed multiplier and its eligible subject tag(s).
-- [ ] T015 [US2] In `js/main.js`, increase `Run.difficultyTier` by 1 after every 3 consecutive correct answers
+- [X] T015 [US2] In `js/main.js`, increase `Run.difficultyTier` by 1 after every 3 consecutive correct answers
       (depends on T010's streak tracking, T014).
-- [ ] T016 [US2] In `js/main.js`, decrease `Run.difficultyTier` by 1 (floor 0, run continues) on a wrong
+- [X] T016 [US2] In `js/main.js`, decrease `Run.difficultyTier` by 1 (floor 0, run continues) on a wrong
       answer (depends on T010, T014).
-- [ ] T017 [US2] In `js/main.js`, feed `Run.difficultyTier` into `js/game.js` wave spawning (enemy speed
+- [X] T017 [US2] In `js/main.js`, feed `Run.difficultyTier` into `js/game.js` wave spawning (enemy speed
       multiplier, T014) and into `js/quiz.js` `drawNextQuestion` (eligible tags, T005).
 
 **Checkpoint**: User Stories 1 and 2 both work independently (quickstart.md Scenario 2).
