@@ -86,19 +86,19 @@ score and wave progression; run out of lives and confirm the summary appears.
 - [X] T008 [US1] Implement the wave/enemy model in `js/game.js`: spawn a wave's enemies, move them toward the
       ship, detect an enemy reaching the ship (signal 1 life lost) and an enemy being defeated by ship fire
       (FR-002, FR-007).
-- [ ] T009 [US1] Wire wave-cleared → question trigger in `js/main.js`: when a wave's `cleared` flag becomes
+- [X] T009 [US1] Wire wave-cleared → question trigger in `js/main.js`: when a wave's `cleared` flag becomes
       true (T008), call `js/quiz.js` `drawNextQuestion` and show the run screen's question overlay (FR-003).
-- [ ] T010 [US1] Implement answer handling in `js/main.js`: on the player's selection, compare against the
+- [X] T010 [US1] Implement answer handling in `js/main.js`: on the player's selection, compare against the
       shuffled correct index from T005, show the question's `e` (explanation) either way, increase
       `Run.score`/`Run.streak` on a correct answer (FR-005), reset `Run.streak` without deducting `Run.score`
       on a wrong answer (FR-006), then start the next wave.
-- [ ] T011 [US1] Implement the lives/game-over transition in `js/main.js`: decrement `Run.lives` on each
+- [X] T011 [US1] Implement the lives/game-over transition in `js/main.js`: decrement `Run.lives` on each
       enemy-reaches-ship event from T008, end the run when `Run.lives` reaches 0 (FR-007), and route to the
       game-over screen.
-- [ ] T012 [US1] Implement the end-of-run summary in `js/main.js` / `css/style.css`: append each wrong answer
+- [X] T012 [US1] Implement the end-of-run summary in `js/main.js` / `css/style.css`: append each wrong answer
       to `Run.missed` (T010) and list every entry (question + explanation) on the game-over screen (FR-009,
       data-model.md `Run.missed`).
-- [ ] T013 [US1] Wire the start control in `js/main.js`: disable it and show the FR-013 warning when
+- [X] T013 [US1] Wire the start control in `js/main.js`: disable it and show the FR-013 warning when
       `js/quiz.js` reports the question bank unavailable (T005); otherwise start a fresh `Run` (score 0, lives
       at an implementation constant, streak 0, tier 0) and the first wave.
 
