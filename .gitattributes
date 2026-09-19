@@ -1,0 +1,2 @@
+# Keep line endings identical on Windows, macOS and Linux (Spec Kit rewrites some files with CRLF on Windows)
+* text=auto eol=lf
